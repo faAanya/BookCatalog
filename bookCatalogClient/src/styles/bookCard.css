@@ -1,0 +1,37 @@
+.book-details {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', sans-serif;
+
+    color: #000;
+}
+
+.book-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+
+    color: #000;
+}
+
+.book-cover {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+ul {
+    padding-left: 1.2rem;
+    margin-top: 0.25rem;
+
+    color: #000;
+}
+
+li {
+    list-style-type: disc;
+    margin-bottom: 0.25rem;
+}
