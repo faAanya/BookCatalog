@@ -10,3 +10,19 @@ export const fetchBooks = async () => {
         return [];
     }
 };
+
+export const addBook = async (book) => {
+    try {
+        const response = await axios.post("http://localhost:5013/books", book, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        console.log("Book added:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Axios addBook error:", error);
+        throw error;
+    }
+};

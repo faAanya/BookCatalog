@@ -1,0 +1,23 @@
+.create-book-form {
+    margin: 20px 0;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background: #f4f4f4;
+    color: black;
+
+}
+
+.create-book-form input,
+.create-book-form textarea {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 8px;
+    font-size: 1rem;
+
+}
+
+.create-book-form button {
+    margin-right: 10px;
+    padding: 6px 12px;
+}
