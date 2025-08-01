@@ -11,7 +11,8 @@ public static class BooksEndpoints
         //GET /books
         group.MapGet("/", async (BookCatalogDbContext dbContext) =>
         {
-            await dbContext.Books.ToListAsync();
+            var books = await dbContext.Books.ToListAsync();
+            return Results.Ok(books);
         });
 
         //gets book by id
@@ -31,7 +32,7 @@ public static class BooksEndpoints
             await dbContext.AddAsync(newBook);
             await dbContext.SaveChangesAsync();
 
-            return Results.CreatedAtRoute("/games", newBook);
+            return Results.Created($"/books/{newBook.Id}", newBook);
         });
 
         //changes the book with certain id
