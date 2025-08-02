@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 public static class BooksEndpoints
@@ -17,9 +18,9 @@ public static class BooksEndpoints
 
         //gets book by id
         //GET /books/{id}
-        group.MapGet("/{id}", async (Guid bookId, BookCatalogDbContext dbContext) =>
+        group.MapGet("/{id}", async (Guid id, BookCatalogDbContext dbContext) =>
        {
-           Book? book = await dbContext.Books.FindAsync(bookId);
+           Book? book = await dbContext.Books.FindAsync(id);
 
            return book == null ? Results.NotFound() : Results.Ok(book);
 
@@ -37,23 +38,23 @@ public static class BooksEndpoints
 
         //changes the book with certain id
         //PUT /books/{id}
-        group.MapPut("/{id}", async (Guid bookId, Book updatedBook, BookCatalogDbContext dbContext) =>
+        group.MapPut("/{id}", async (Guid id, Book updatedBook, BookCatalogDbContext dbContext) =>
         {
-            var bookToUpdate = await dbContext.Books.FindAsync(bookId);
+            var bookToUpdate = await dbContext.Books.FindAsync(id);
 
             if (bookToUpdate == null)
                 return Results.NotFound();
 
             dbContext.Entry(bookToUpdate).CurrentValues.SetValues(updatedBook);
             await dbContext.SaveChangesAsync();
-            return Results.NoContent();
+            return Results.Ok(bookToUpdate);
         });
 
         //deletes the book with certain id
         //DELETE /books/{id}
-        group.MapDelete("/{id}", async (Guid bookId, BookCatalogDbContext dbContext) =>
+        group.MapDelete("/{id}", async (Guid id, BookCatalogDbContext dbContext) =>
         {
-            await dbContext.Books.Where(book => book.Id == bookId).ExecuteDeleteAsync();
+            await dbContext.Books.Where(book => book.Id == id).ExecuteDeleteAsync();
             await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
