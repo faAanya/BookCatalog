@@ -20,19 +20,22 @@ export const HomePage = () => {
             <h1>Book Catalog</h1>
             <button onClick={() => navigate("/createBook")}>Add New Book</button>
             <div className="book-list">
-                {books.map(book => (
-                    <BookCard
-                        key={book.id}
-                        id={book.id}
-                        title={book.title}
-                        description={book.description}
-                        isbn={book.isbn}
-                        publicationYear={book.publicationYear}
-                        coverImageUrl={book.coverImageUrl}
-                        pageCount={book.pageCount}
-                        onClick={() => { navigate(`/book/${book.id}`) }}
-                    />
-                ))}
+                {
+                    books.map(book => (
+                        <BookCard
+                            key={book.id}
+                            id={book.id}
+                            title={book.title}
+                            description={book.description}
+                            isbn={book.isbn}
+                            publicationYear={book.publicationYear}
+                            coverImageUrl={book.coverImageUrl}
+                            authors={book.authors}
+                            genres={book.genres}
+                            pageCount={book.pageCount}
+                            onClick={() => { navigate(`/book/${book.id}`) }}
+                        />
+                    ))}
             </div>
         </>
     )

@@ -12,8 +12,23 @@ public static class BooksEndpoints
         //GET /books
         group.MapGet("/", async (BookCatalogDbContext dbContext) =>
         {
-            var books = await dbContext.Books.ToListAsync();
-            return Results.Ok(books);
+            var books = await dbContext.Books
+       .Include(b => b.Authors)
+       .Include(b => b.Genres)
+       .ToListAsync();
+            var result = books.Select(book => new GetBookDTO
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Description = book.Description,
+                ISBN = book.ISBN,
+                PublicationYear = book.PublicationYear,
+                CoverImageUrl = book.CoverImageUrl,
+                PageCount = book.PageCount,
+                Authors = book.Authors.Select(a => $"{a.FirstName} {a.LastName}").ToList(),
+                Genres = book.Genres.Select(g => g.Name).ToList()
+            });
+            return Results.Ok(result);
         });
 
         //gets book by id
