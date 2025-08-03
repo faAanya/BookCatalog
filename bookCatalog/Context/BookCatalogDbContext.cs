@@ -13,6 +13,16 @@ class BookCatalogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
+        modelBuilder.Entity<Book>()
+                .HasMany(b => b.Authors)
+                .WithMany(a => a.Books)
+                .UsingEntity(j => j.ToTable("BookAuthors"));
+
+        modelBuilder.Entity<Book>()
+            .HasMany(b => b.Genres)
+            .WithMany(g => g.Books)
+            .UsingEntity(j => j.ToTable("BookGenres"));
+
         modelBuilder.Entity<Author>().HasData(
                 new Author
                 {
