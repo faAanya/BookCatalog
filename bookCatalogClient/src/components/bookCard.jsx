@@ -1,5 +1,4 @@
 import "../styles/bookCard.css"
-import axios from "axios";
 
 export const BookCard = ({
     id,

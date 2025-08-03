@@ -22,6 +22,8 @@ export const fetchBook = async (id) => {
 
 export const addBook = async (book) => {
     try {
+        console.log(book);
+
         const response = await axios.post("http://localhost:5013/books", book, {
             headers: { "Content-Type": "application/json" },
         });
