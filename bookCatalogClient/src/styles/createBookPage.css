@@ -1,0 +1,60 @@
+/* createBookForm.css */
+
+.create-book-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.create-book-form h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.create-book-form input,
+.create-book-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.create-book-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.create-book-form button {
+    padding: 12px 24px;
+    margin-right: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.create-book-form button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+.create-book-form button[type="submit"]:hover {
+    background-color: #439540;
+}
+
+.create-book-form button[type="button"] {
+    background-color: #e0e0e0;
+}
+
+.create-book-form button[type="button"]:hover {
+    background-color: #c7c7c7;
+}

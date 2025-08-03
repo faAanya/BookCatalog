@@ -1,0 +1,58 @@
+.edit-book-page {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.edit-book-page h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.edit-book-page input,
+.edit-book-page textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.edit-book-page textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.edit-book-page button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    margin-right: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.edit-book-page button:first-of-type {
+    background-color: #4caf50;
+    color: white;
+}
+
+.edit-book-page button:first-of-type:hover {
+    background-color: #43a047;
+}
+
+.edit-book-page button:last-of-type {
+    background-color: #e0e0e0;
+}
+
+.edit-book-page button:last-of-type:hover {
+    background-color: #c7c7c7;
+}
