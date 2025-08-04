@@ -3,7 +3,7 @@ services:
     container_name: book.catalog.api
     image: book.catalog.api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Develompent
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=3000
     build:
       context: ./bookCatalog
@@ -24,7 +24,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/dataBookCatalog
 
   bookCatalogClient:
     image: book.catalog.client

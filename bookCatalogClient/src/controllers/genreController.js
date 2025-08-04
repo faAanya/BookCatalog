@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const fetchGenres = async () => {
     try {
-        const response = await axios.get("http://localhost:5013/genres");
+        const response = await axios.get("http://localhost:3000/genres");
         return response.data;
     } catch (error) {
         console.error("Axios fetch error:", error);
@@ -12,7 +12,7 @@ export const fetchGenres = async () => {
 
 export const fetchGenre = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5013/genres/${id}`);
+        const response = await axios.get(`http://localhost:3000/genres/${id}`);
         return response.data;
     } catch (error) {
         console.error("Axios fetch error:", error);
@@ -22,7 +22,7 @@ export const fetchGenre = async (id) => {
 
 export const addGenre = async (genre) => {
     try {
-        const response = await axios.post("http://localhost:5013/genres", genre, {
+        const response = await axios.post("http://localhost:3000/genres", genre, {
             headers: { "Content-Type": "application/json" },
         });
         return response.data;
@@ -34,7 +34,7 @@ export const addGenre = async (genre) => {
 
 export const deleteGenre = async (id) => {
     try {
-        await axios.delete(`http://localhost:5013/genres/${id}`);
+        await axios.delete(`http://localhost:3000/genres/${id}`);
     } catch (error) {
         console.error("Axios delete genre error", error);
         throw error;
@@ -43,7 +43,7 @@ export const deleteGenre = async (id) => {
 
 export const updateGenre = async (id, updatedGenre) => {
     try {
-        const response = await axios.put(`http://localhost:5013/genres/${id}`, updatedGenre, {
+        const response = await axios.put(`http://localhost:3000/genres/${id}`, updatedGenre, {
             headers: { "Content-Type": "application/json" },
         });
         return response.data;
