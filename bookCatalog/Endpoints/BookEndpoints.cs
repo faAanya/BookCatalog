@@ -35,7 +35,10 @@ public static class BooksEndpoints
         //GET /books/{id}
         group.MapGet("/{id}", async (Guid id, BookCatalogDbContext dbContext) =>
        {
-           Book? book = await dbContext.Books.FindAsync(id);
+           Book? book = await dbContext.Books
+           .Include(b => b.Authors)
+           .Include(b => b.Genres)
+           .FirstOrDefaultAsync(b => b.Id == id);
 
            return book == null ? Results.NotFound() : Results.Ok(book);
 
