@@ -15,7 +15,7 @@ public static class ImagesEndpoints
              if (book == null)
                  return Results.NoContent();
 
-             var fileName = FileService.GenerateFileName(book.CoverImageUrl);
+             var fileName = Path.GetFileName(new Uri(book.CoverImageUrl).AbsolutePath);
 
              var filePath = fileService.GetFilePath(fileName);
 
