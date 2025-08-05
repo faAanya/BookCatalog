@@ -1,6 +1,8 @@
 import "../styles/bookCard.css"
-
+import { useState, useEffect } from "react";
+import { getImage } from "../controllers/imageController";
 export const BookCard = ({
+    id,
     title,
     description,
     isbn,
@@ -11,6 +13,19 @@ export const BookCard = ({
     genres,
     onClick
 }) => {
+    const [image, setImage] = useState("");
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            const imageBlob = await getImage(id);
+            if (imageBlob) {
+
+                const url = URL.createObjectURL(imageBlob);
+                setImage(url);
+            }
+        };
+        fetchImage();
+    }, [id]);
 
     return (
         <div className="book-details" onClick={() => onClick(
@@ -25,7 +40,7 @@ export const BookCard = ({
             {coverImageUrl && (
                 <img
                     className="book-cover"
-                    src={coverImageUrl}
+                    src={image}
                     alt={`${title} cover`}
                 />
             )}

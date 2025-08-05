@@ -4,6 +4,7 @@ import "../styles/createBookPage.css"
 import { useNavigate } from 'react-router-dom';
 import { fetchAuthors } from '../controllers/authorController';
 import { fetchGenres } from '../controllers/genreController';
+import { downloadImage } from '../controllers/imageController';
 export const CreateBookPage = () => {
     const navigate = useNavigate();
     const [authors, setAuthors] = useState([]);
@@ -66,6 +67,11 @@ export const CreateBookPage = () => {
 
         try {
             await addBook(newBook);
+            console.log(form.coverImageUrl);
+            const image = {
+                fileName: form.coverImageUrl
+            }
+            await downloadImage(image);
             setForm({
                 title: '',
                 description: '',
