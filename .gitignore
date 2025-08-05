@@ -1,6 +1,7 @@
 # Build
 bin/
 obj/
+Downloads/
 
 # Editor directories and files
 .vscode/*

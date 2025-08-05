@@ -7,7 +7,6 @@ public static class BooksEndpoints
     {
         var group = app.MapGroup("books");
 
-
         //gets all books
         //GET /books
         group.MapGet("/", async (BookCatalogDbContext dbContext) =>

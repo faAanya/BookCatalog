@@ -7,6 +7,8 @@ DotEnv.Load();
 var connectionString = Environment.GetEnvironmentVariable("POSTGRES_STRING");
 builder.Services.AddDbContext<BookCatalogDbContext>(options => options.UseNpgsql(connectionString));
 
+builder.Services.AddScoped<FileService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -22,5 +24,6 @@ var app = builder.Build();
 app.MapBooksEndpoints();
 app.MapAuthorsEndpoints();
 app.MapGenresEndpoints();
+app.MapImagesEndpoints();
 app.UseCors();
 app.Run();
