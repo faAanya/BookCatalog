@@ -25,4 +25,5 @@ app.UseCors();
 app.MapBooksEndpoints();
 app.MapAuthorsEndpoints();
 app.MapGenresEndpoints();
+app.MapImagesEndpoints();
 app.Run();
