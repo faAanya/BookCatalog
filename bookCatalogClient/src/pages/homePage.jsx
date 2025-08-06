@@ -1,4 +1,4 @@
-import { BookCard } from '../components/bookCard';
+import { Book } from '../components/bookComponent';
 import { useEffect, useState } from 'react';
 import { fetchBooks } from '../controllers/bookController';
 import { useNavigate } from 'react-router-dom';
@@ -17,12 +17,16 @@ export const HomePage = () => {
     }, []);
     return (
         <>
-            <h1>Book Catalog</h1>
-            <button onClick={() => navigate("/createBook")}>Add New Book</button>
+            <header>
+                <h1>Book Catalog</h1>
+                <button onClick={() => navigate("/createBook")}>Add New Book</button>
+                <button onClick={() => navigate("/authors")}>Authors</button>
+                <button onClick={() => navigate("/genres")}>Genres</button></header>
+
             <div className="book-list">
                 {
                     books.map(book => (
-                        <BookCard
+                        <Book
                             key={book.id}
                             id={book.id}
                             title={book.title}

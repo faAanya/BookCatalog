@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { deleteBook, fetchBook } from '../controllers/bookController';
+import { deleteBook, fetchBook } from '../../controllers/bookController';
 import { useNavigate, useParams } from 'react-router-dom';
-import "../styles/bookPage.css"
+import "../../styles/bookPage.css"
+import { BookImage } from '../../components/imageComponent';
 export const BookPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ export const BookPage = () => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
+                <BookImage id={book.id} title={book.title} />
                 <h2>{book.title}</h2>
                 <p><strong>ISBN:</strong> {book.isbn}</p>
                 <p><strong>Description:</strong> {book.description}</p>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { addBook } from '../controllers/bookController';
-import "../styles/createBookPage.css"
+import { addBook } from '../../controllers/bookController';
+import "../../styles/createBookPage.css"
 import { useNavigate } from 'react-router-dom';
-import { fetchAuthors } from '../controllers/authorController';
-import { fetchGenres } from '../controllers/genreController';
-import { downloadImage } from '../controllers/imageController';
+import { fetchAuthors } from '../../controllers/authorController';
+import { fetchGenres } from '../../controllers/genreController';
+import { downloadImage } from '../../controllers/imageController';
 export const CreateBookPage = () => {
     const navigate = useNavigate();
     const [authors, setAuthors] = useState([]);

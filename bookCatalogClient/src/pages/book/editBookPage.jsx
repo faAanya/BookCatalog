@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { fetchBook, updateBook } from '../controllers/bookController';
+import { fetchBook, updateBook } from '../../controllers/bookController';
 import { useNavigate, useParams } from 'react-router-dom';
-import "../styles/editBookPage.css"
+import "../../styles/editBookPage.css"
 
 export const EditBookPage = () => {
     const { id } = useParams();
