@@ -21,8 +21,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+
 app.UseCors();
+app.UseGlobalErrorHandler();
+app.UseBookValidation();
 app.MapBooksEndpoints();
 app.MapAuthorsEndpoints();
 app.MapGenresEndpoints();
+app.MapImagesEndpoints();
 app.Run();
