@@ -1,0 +1,68 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.modal-content p {
+    margin: 8px 0;
+    color: #444;
+    font-size: 16px;
+}
+
+.modal-content button {
+    margin: 15px 8px 0 8px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content button:nth-child(5) {
+    /* Edit */
+    background-color: #1976d2;
+    color: white;
+}
+
+.modal-content button:nth-child(5):hover {
+    background-color: #125ea9;
+}
+
+.modal-content button:nth-child(6) {
+    /* Delete */
+    background-color: #d32f2f;
+    color: white;
+}
+
+.modal-content button:nth-child(6):hover {
+    background-color: #9a2222;
+}
+
+.modal-content button:nth-child(7) {
+    background-color: #e0e0e0;
+}
