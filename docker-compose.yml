@@ -1,0 +1,43 @@
+services:
+  book.catalog.api:
+    container_name: book.catalog.api
+    image: book.catalog.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=3000
+    build:
+      context: ./bookCatalog
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: bookCatalogDb
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: bookCatalog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bookCatalogPassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/dataBookCatalog
+
+  bookCatalogClient:
+    image: book.catalog.client
+    container_name: "bookCatalogClient"
+    build:
+      context: bookCatalogClient
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - book.catalog.api
+
+volumes:
+  postgres-data:
+
+

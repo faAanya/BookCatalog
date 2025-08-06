@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 DotEnv.Load();
-var connectionString = Environment.GetEnvironmentVariable("POSTGRES_STRING");
+var connectionString = "Host=postgres;Port=5432;Database=bookCatalog;Username=postgres;Password=bookCatalogPassword";
 builder.Services.AddDbContext<BookCatalogDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<FileService>();
@@ -21,6 +21,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCors();
 app.MapBooksEndpoints();
 app.MapAuthorsEndpoints();
 app.MapGenresEndpoints();

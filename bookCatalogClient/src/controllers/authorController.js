@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const fetchAuthors = async () => {
     try {
-        const response = await axios.get("http://localhost:5013/authors");
+        const response = await axios.get("http://localhost:3000/authors");
         return response.data;
     } catch (error) {
         console.error("Axios fetch error:", error);
@@ -12,7 +12,7 @@ export const fetchAuthors = async () => {
 
 export const fetchAuthor = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5013/authors/${id}`);
+        const response = await axios.get(`http://localhost:3000/authors/${id}`);
         return response.data;
     } catch (error) {
         console.error("Axios fetch error:", error);
@@ -22,7 +22,7 @@ export const fetchAuthor = async (id) => {
 
 export const addAuthor = async (author) => {
     try {
-        const response = await axios.post("http://localhost:5013/authors", author, {
+        const response = await axios.post("http://localhost:3000/authors", author, {
             headers: { "Content-Type": "application/json" },
         });
         return response.data;
@@ -34,7 +34,7 @@ export const addAuthor = async (author) => {
 
 export const deleteAuthor = async (id) => {
     try {
-        await axios.delete(`http://localhost:5013/authors/${id}`);
+        await axios.delete(`http://localhost:3000/authors/${id}`);
     } catch (error) {
         console.error("Axios delete author error", error);
         throw error;
@@ -43,7 +43,7 @@ export const deleteAuthor = async (id) => {
 
 export const updateAuthor = async (id, updatedAuthor) => {
     try {
-        const response = await axios.put(`http://localhost:5013/authors/${id}`, updatedAuthor, {
+        const response = await axios.put(`http://localhost:3000/authors/${id}`, updatedAuthor, {
             headers: { "Content-Type": "application/json" },
         });
         return response.data;
