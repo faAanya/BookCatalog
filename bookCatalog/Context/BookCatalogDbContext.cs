@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-class BookCatalogDbContext : DbContext
+public class BookCatalogDbContext : DbContext
 {
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }

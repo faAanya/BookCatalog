@@ -6,8 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load();
 var connectionString = Environment.GetEnvironmentVariable("POSTGRES_STRING");
 builder.Services.AddDbContext<BookCatalogDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddScoped<IRepository<Book>, BookPostgreRepository>();
+builder.Services.AddScoped<IRepository<Author>, AuthorPostgreRepository>();
+builder.Services.AddScoped<IRepository<Genre>, GenrePostgreRepository>();
 
 builder.Services.AddScoped<FileService>();
+
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -21,9 +26,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MapBooksEndpoints();
-app.MapAuthorsEndpoints();
-app.MapGenresEndpoints();
-app.MapImagesEndpoints();
 app.UseCors();
+app.MapControllers();
 app.Run();
