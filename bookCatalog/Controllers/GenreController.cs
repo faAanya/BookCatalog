@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class GenresController : ControllerBase
 {
-    private readonly IRepository<Genre> _dbContext;
+    private readonly IGenreRepository _dbContext;
 
-    public GenresController(IRepository<Genre> dbContext)
+    public GenresController(IGenreRepository dbContext)
     {
         _dbContext = dbContext;
     }
@@ -19,7 +19,7 @@ public class GenresController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllGenres()
     {
-        var genres = await _dbContext.GetAllItems();
+        var genres = await _dbContext.GetAllGenres();
         return Ok(genres);
     }
 
@@ -27,7 +27,7 @@ public class GenresController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGenreById(Guid id)
     {
-        var genre = await _dbContext.GetItemById(id);
+        var genre = await _dbContext.GetGenreById(id);
         if (genre == null)
             return NotFound();
 
@@ -36,11 +36,11 @@ public class GenresController : ControllerBase
 
     // POST: api/books
     [HttpPost]
-    public async Task<IActionResult> CreateGenre([FromBody] Genre newGenre)
+    public async Task<IActionResult> CreateGenre([FromBody] CreateGenreDTO newGenre)
     {
-        await _dbContext.CreateItem(newGenre);
+        await _dbContext.CreateGenre(newGenre);
         await _dbContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetGenreById), new { id = newGenre.Id, title = newGenre.Name });
+        return Ok(newGenre);
     }
 
     // PUT: api/books/{id}
@@ -48,7 +48,7 @@ public class GenresController : ControllerBase
     public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] Book updatedBook)
     {
         // await _dbContext.UpdateItem(id, updatedBook);
-        // await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -57,7 +57,7 @@ public class GenresController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGenre(Guid id)
     {
-        await _dbContext.DeleteItem(id);
+        await _dbContext.DeleteGenre(id);
         await _dbContext.SaveChangesAsync();
         return NoContent();
     }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class ImagesController : ControllerBase
 {
-    private readonly IRepository<Book> _dbContext;
+    private readonly IBookRepository _dbContext;
     private readonly FileService _fileService;
 
-    public ImagesController(IRepository<Book> dbContext, FileService fileService)
+    public ImagesController(IBookRepository dbContext, FileService fileService)
     {
         _dbContext = dbContext;
         _fileService = fileService;
@@ -21,7 +21,7 @@ public class ImagesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFile(Guid id)
     {
-        Book? book = await _dbContext.GetItemById(id);
+        Book? book = await _dbContext.GetBookById(id);
 
         var fileName = Path.GetFileName(new Uri(book.CoverImageUrl).AbsolutePath);
 

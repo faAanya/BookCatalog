@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class AuthorsController : ControllerBase
 {
-    private readonly IRepository<Author> _dbContext;
+    private readonly IAuthorRepository _dbContext;
 
-    public AuthorsController(IRepository<Author> dbContext)
+    public AuthorsController(IAuthorRepository dbContext)
     {
         _dbContext = dbContext;
     }
@@ -19,7 +19,7 @@ public class AuthorsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllAuthors()
     {
-        var author = await _dbContext.GetAllItems();
+        var author = await _dbContext.GetAllAuthors();
         return Ok(author);
     }
 
@@ -27,7 +27,7 @@ public class AuthorsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAuthorById(Guid id)
     {
-        var author = await _dbContext.GetItemById(id);
+        var author = await _dbContext.GetAuthorById(id);
         if (author == null)
             return NotFound();
 
@@ -36,11 +36,11 @@ public class AuthorsController : ControllerBase
 
     // POST: api/books
     [HttpPost]
-    public async Task<IActionResult> CreateAuthor([FromBody] Author newAuthor)
+    public async Task<IActionResult> CreateAuthor([FromBody] CreateAuthorDTO newAuthor)
     {
-        await _dbContext.CreateItem(newAuthor);
+        await _dbContext.CreateAuthor(newAuthor);
         await _dbContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetAuthorById), new { id = newAuthor.Id, title = newAuthor.FirstName });
+        return Ok(newAuthor);
     }
 
     // PUT: api/books/{id}
@@ -48,7 +48,7 @@ public class AuthorsController : ControllerBase
     public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] Book updatedBook)
     {
         // await _dbContext.UpdateItem(id, updatedBook);
-        // await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -57,7 +57,7 @@ public class AuthorsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAuthor(Guid id)
     {
-        await _dbContext.DeleteItem(id);
+        await _dbContext.DeleteAuthor(id);
         await _dbContext.SaveChangesAsync();
         return NoContent();
     }

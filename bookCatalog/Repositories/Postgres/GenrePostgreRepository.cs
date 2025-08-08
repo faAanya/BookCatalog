@@ -1,7 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-public class GenrePostgreRepository : IRepository<Genre>
+public class GenrePostgreRepository : IGenreRepository
 {
     private BookCatalogDbContext _dbContext;
     public GenrePostgreRepository(BookCatalogDbContext dbContext)
@@ -10,29 +10,38 @@ public class GenrePostgreRepository : IRepository<Genre>
     }
     private bool disposed = false;
 
-    public async Task<IEnumerable<Genre>> GetAllItems()
+    public async Task<IEnumerable<Genre>> GetAllGenres()
     {
         var genres = await _dbContext.Genres.ToListAsync();
         return genres;
     }
 
-    public async Task<Genre> GetItemById(Guid id)
+
+    public async Task<Genre> GetGenreById(Guid id)
     {
         var genre = await _dbContext.Genres.FirstOrDefaultAsync(g => g.Id == id);
         return genre;
     }
 
-
-    public async Task CreateItem(Genre Item)
+    public async Task CreateGenre(CreateGenreDTO genreDTO)
     {
-        await _dbContext.Genres.AddAsync(Item);
+        var newGenre = new Genre()
+        {
+            Name = genreDTO.Name,
+            Description = genreDTO.Description,
+        };
+        newGenre.Books = new();
+        await _dbContext.Genres.AddAsync(newGenre);
     }
 
-
-    public async Task UpdateItem(Guid id, Genre newItem) { }
-    public async Task DeleteItem(Guid id)
+    public async Task UpdateGenre(Guid id, Genre updatedGenre)
     {
-        await _dbContext.Genres.Where(Genre => Genre.Id == id).ExecuteDeleteAsync();
+        throw new NotImplementedException();
+    }
+
+    public async Task DeleteGenre(Guid id)
+    {
+        await _dbContext.Genres.Where(genre => genre.Id == id).ExecuteDeleteAsync();
     }
     public async Task SaveChangesAsync()
     {

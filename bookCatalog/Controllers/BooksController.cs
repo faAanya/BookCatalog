@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly IRepository<Book> _dbContext;
+    private readonly IBookRepository _dbContext;
 
-    public BooksController(IRepository<Book> dbContext)
+    public BooksController(IBookRepository dbContext)
     {
         _dbContext = dbContext;
     }
@@ -19,7 +19,7 @@ public class BooksController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooks()
     {
-        var books = await _dbContext.GetAllItems();
+        var books = await _dbContext.GetAllBooks();
 
         var result = books.Select(BookMapper.BookToDTO);
 
@@ -30,7 +30,7 @@ public class BooksController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBookById(Guid id)
     {
-        var book = await _dbContext.GetItemById(id);
+        var book = await _dbContext.GetBookById(id);
 
         if (book == null)
             return NotFound();
@@ -40,18 +40,18 @@ public class BooksController : ControllerBase
 
     // POST: api/books
     [HttpPost]
-    public async Task<IActionResult> CreateBook([FromBody] Book book)
+    public async Task<IActionResult> CreateBook([FromBody] CreateBookDTO book)
     {
-        await _dbContext.CreateItem(book);
+        await _dbContext.CreateBook(book);
         await _dbContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetBookById), new { id = book.Id, title = book.Title });
+        return Ok(book);
     }
 
     // PUT: api/books/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateBook(Guid id, [FromBody] Book updatedBook)
     {
-        await _dbContext.UpdateItem(id, updatedBook);
+        await _dbContext.UpdateBook(id, updatedBook);
         await _dbContext.SaveChangesAsync();
 
         return Ok();
@@ -61,7 +61,7 @@ public class BooksController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBook(Guid id)
     {
-        await _dbContext.DeleteItem(id);
+        await _dbContext.DeleteBook(id);
         await _dbContext.SaveChangesAsync();
         return NoContent();
     }
