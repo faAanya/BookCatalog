@@ -19,7 +19,7 @@ public class GenresController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllGenres()
     {
-        var genres = await _dbContext.GetAllGenres();
+        var genres = await _dbContext.GetAllGenresAsync();
         return Ok(genres);
     }
 
@@ -27,7 +27,7 @@ public class GenresController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGenreById(Guid id)
     {
-        var genre = await _dbContext.GetGenreById(id);
+        var genre = await _dbContext.GetGenreByIdAsync(id);
         if (genre == null)
             return NotFound();
 
@@ -38,7 +38,7 @@ public class GenresController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateGenre([FromBody] GenreDTO newGenre)
     {
-        await _dbContext.CreateGenre(newGenre);
+        await _dbContext.CreateGenreAsync(newGenre);
         await _dbContext.SaveChangesAsync();
         return Ok(newGenre);
     }
@@ -47,7 +47,7 @@ public class GenresController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] GenreDTO updatedGenre)
     {
-        await _dbContext.UpdateGenre(id, updatedGenre);
+        await _dbContext.UpdateGenreAsync(id, updatedGenre);
         await _dbContext.SaveChangesAsync();
 
         return Ok();
@@ -57,7 +57,7 @@ public class GenresController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGenre(Guid id)
     {
-        await _dbContext.DeleteGenre(id);
+        await _dbContext.DeleteGenreAsync(id);
         await _dbContext.SaveChangesAsync();
         return NoContent();
     }

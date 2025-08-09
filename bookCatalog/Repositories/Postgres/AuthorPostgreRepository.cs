@@ -10,26 +10,26 @@ public class AuthorPostgreRepository : IAuthorRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<AuthorDTO>> GetAllAuthors()
+    public async Task<IEnumerable<AuthorDTO>> GetAllAuthorsAsync()
     {
         var authors = await _dbContext.Authors.ToListAsync();
         return authors.Select(AuthorMapper.AuthorToDTO).ToList();
     }
 
-    public async Task<AuthorDTO> GetAuthorById(Guid id)
+    public async Task<AuthorDTO> GetAuthorByIdAsync(Guid id)
     {
         var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == id);
         var authorDTO = AuthorMapper.AuthorToDTO(author);
         return authorDTO;
     }
 
-    public async Task CreateAuthor(AuthorDTO authorDTO)
+    public async Task CreateAuthorAsync(AuthorDTO authorDTO)
     {
         var newAuthor = AuthorMapper.DTOtoAuthor(authorDTO);
         await _dbContext.Authors.AddAsync(newAuthor);
     }
 
-    public async Task UpdateAuthor(Guid id, AuthorDTO newAuthor)
+    public async Task UpdateAuthorAsync(Guid id, AuthorDTO newAuthor)
     {
         var updatedAuthor = await _dbContext.Authors.FindAsync(id);
         updatedAuthor.FirstName = newAuthor.FirstName;
@@ -37,7 +37,7 @@ public class AuthorPostgreRepository : IAuthorRepository
         updatedAuthor.Biography = newAuthor.Biography;
     }
 
-    public async Task DeleteAuthor(Guid id)
+    public async Task DeleteAuthorAsync(Guid id)
     {
         await _dbContext.Authors.Where(author => author.Id == id).ExecuteDeleteAsync();
     }

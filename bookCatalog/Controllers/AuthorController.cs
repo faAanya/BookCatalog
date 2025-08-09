@@ -19,7 +19,7 @@ public class AuthorsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllAuthors()
     {
-        var author = await _dbContext.GetAllAuthors();
+        var author = await _dbContext.GetAllAuthorsAsync();
         return Ok(author);
     }
 
@@ -27,7 +27,7 @@ public class AuthorsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAuthorById(Guid id)
     {
-        var author = await _dbContext.GetAuthorById(id);
+        var author = await _dbContext.GetAuthorByIdAsync(id);
         if (author == null)
             return NotFound();
 
@@ -38,7 +38,7 @@ public class AuthorsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAuthor([FromBody] AuthorDTO newAuthor)
     {
-        await _dbContext.CreateAuthor(newAuthor);
+        await _dbContext.CreateAuthorAsync(newAuthor);
         await _dbContext.SaveChangesAsync();
         return Ok(newAuthor);
     }
@@ -47,7 +47,7 @@ public class AuthorsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] AuthorDTO updatedAuthor)
     {
-        await _dbContext.UpdateAuthor(id, updatedAuthor);
+        await _dbContext.UpdateAuthorAsync(id, updatedAuthor);
         await _dbContext.SaveChangesAsync();
 
         return Ok(updatedAuthor);
@@ -57,7 +57,7 @@ public class AuthorsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAuthor(Guid id)
     {
-        await _dbContext.DeleteAuthor(id);
+        await _dbContext.DeleteAuthorAsync(id);
         await _dbContext.SaveChangesAsync();
         return NoContent();
     }

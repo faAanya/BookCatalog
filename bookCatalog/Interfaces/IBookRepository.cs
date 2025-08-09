@@ -1,9 +1,9 @@
 public interface IBookRepository : IDisposable
 {
-    Task<IEnumerable<Book>> GetAllBooks();
-    Task<BookDTO> GetBookById(Guid id);
-    Task CreateBook(BookDTO IBookem);
-    Task UpdateBook(Guid id, BookDTO newBook);
-    Task DeleteBook(Guid id);
+    Task<IEnumerable<Book>> GetAllBooksAsync();
+    Task<BookDTO> GetBookByIdAsync(Guid id);
+    Task CreateBookAsync(BookDTO IBookem);
+    Task UpdateBookAsync(Guid id, BookDTO newBook);
+    Task DeleteBookAsync(Guid id);
     Task SaveChangesAsync();
 }

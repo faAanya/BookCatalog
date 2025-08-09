@@ -1,9 +1,9 @@
 public interface IAuthorRepository : IDisposable
 {
-    Task<IEnumerable<AuthorDTO>> GetAllAuthors();
-    Task<AuthorDTO> GetAuthorById(Guid id);
-    Task CreateAuthor(AuthorDTO IAuthor);
-    Task UpdateAuthor(Guid id, AuthorDTO newAuthor);
-    Task DeleteAuthor(Guid id);
+    Task<IEnumerable<AuthorDTO>> GetAllAuthorsAsync();
+    Task<AuthorDTO> GetAuthorByIdAsync(Guid id);
+    Task CreateAuthorAsync(AuthorDTO IAuthor);
+    Task UpdateAuthorAsync(Guid id, AuthorDTO newAuthor);
+    Task DeleteAuthorAsync(Guid id);
     Task SaveChangesAsync();
 }

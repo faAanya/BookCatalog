@@ -11,7 +11,7 @@ public class BookPostgreRepository : IBookRepository
     }
     private bool disposed = false;
 
-    public async Task<IEnumerable<Book>> GetAllBooks()
+    public async Task<IEnumerable<Book>> GetAllBooksAsync()
     {
         var books = await _dbContext.Books
         .Include(b => b.Authors)
@@ -20,7 +20,7 @@ public class BookPostgreRepository : IBookRepository
         return books;
     }
 
-    public async Task<BookDTO> GetBookById(Guid id)
+    public async Task<BookDTO> GetBookByIdAsync(Guid id)
     {
         var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id);
         var bookDTO = BookMapper.BookToDTO(book);
@@ -28,7 +28,7 @@ public class BookPostgreRepository : IBookRepository
         return bookDTO;
     }
 
-    public async Task CreateBook(BookDTO bookDTO)
+    public async Task CreateBookAsync(BookDTO bookDTO)
     {
         var authors = await _dbContext.Authors
                             .Where(a => bookDTO.Authors.Contains(a.Id))
@@ -45,7 +45,7 @@ public class BookPostgreRepository : IBookRepository
         await _dbContext.Books.AddAsync(newBook);
     }
 
-    public async Task UpdateBook(Guid id, BookDTO updatedBook)
+    public async Task UpdateBookAsync(Guid id, BookDTO updatedBook)
     {
         var bookToUpdate = _dbContext.Books.FirstOrDefault(b => b.Id == id);
 
@@ -57,7 +57,7 @@ public class BookPostgreRepository : IBookRepository
         bookToUpdate.CoverImageUrl = updatedBook.CoverImageUrl;
     }
 
-    public async Task DeleteBook(Guid id)
+    public async Task DeleteBookAsync(Guid id)
     {
         await _dbContext.Books.Where(book => book.Id == id).ExecuteDeleteAsync();
     }
