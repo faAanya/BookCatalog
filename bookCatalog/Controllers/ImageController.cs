@@ -21,7 +21,7 @@ public class ImagesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFile(Guid id)
     {
-        Book? book = await _dbContext.GetBookById(id);
+        BookDTO? book = await _dbContext.GetBookById(id);
 
         var fileName = Path.GetFileName(new Uri(book.CoverImageUrl).AbsolutePath);
 

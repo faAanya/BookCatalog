@@ -15,7 +15,7 @@ public class GenresController : ControllerBase
         _dbContext = dbContext;
     }
 
-    // GET: /authors
+    // GET: /genres
     [HttpGet]
     public async Task<IActionResult> GetAllGenres()
     {
@@ -23,7 +23,7 @@ public class GenresController : ControllerBase
         return Ok(genres);
     }
 
-    // GET: api/authors/{id}
+    // GET: api/genres/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGenreById(Guid id)
     {
@@ -34,26 +34,26 @@ public class GenresController : ControllerBase
         return Ok(genre);
     }
 
-    // POST: api/books
+    // POST: api/genres
     [HttpPost]
-    public async Task<IActionResult> CreateGenre([FromBody] CreateGenreDTO newGenre)
+    public async Task<IActionResult> CreateGenre([FromBody] GenreDTO newGenre)
     {
         await _dbContext.CreateGenre(newGenre);
         await _dbContext.SaveChangesAsync();
         return Ok(newGenre);
     }
 
-    // PUT: api/books/{id}
+    // PUT: api/genres/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] Book updatedBook)
+    public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] GenreDTO updatedGenre)
     {
-        // await _dbContext.UpdateItem(id, updatedBook);
+        await _dbContext.UpdateGenre(id, updatedGenre);
         await _dbContext.SaveChangesAsync();
 
         return Ok();
     }
 
-    // DELETE: api/books/{id}
+    // DELETE: api/genres/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGenre(Guid id)
     {

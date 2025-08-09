@@ -1,48 +1,47 @@
-
 using Microsoft.EntityFrameworkCore;
 
 public class GenrePostgreRepository : IGenreRepository
 {
-    private BookCatalogDbContext _dbContext;
+    private readonly BookCatalogDbContext _dbContext;
+    private bool disposed = false;
+
     public GenrePostgreRepository(BookCatalogDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    private bool disposed = false;
 
-    public async Task<IEnumerable<Genre>> GetAllGenres()
+    public async Task<IEnumerable<GenreDTO>> GetAllGenres()
     {
         var genres = await _dbContext.Genres.ToListAsync();
-        return genres;
+        return genres.Select(GenreMapper.GenreToDTO);
     }
 
-
-    public async Task<Genre> GetGenreById(Guid id)
+    public async Task<GenreDTO> GetGenreById(Guid id)
     {
         var genre = await _dbContext.Genres.FirstOrDefaultAsync(g => g.Id == id);
-        return genre;
+        return GenreMapper.GenreToDTO(genre);
     }
 
-    public async Task CreateGenre(CreateGenreDTO genreDTO)
+    public async Task CreateGenre(GenreDTO genreDTO)
     {
-        var newGenre = new Genre()
-        {
-            Name = genreDTO.Name,
-            Description = genreDTO.Description,
-        };
-        newGenre.Books = new();
+        var newGenre = GenreMapper.DTOtoGenre(genreDTO);
         await _dbContext.Genres.AddAsync(newGenre);
     }
 
-    public async Task UpdateGenre(Guid id, Genre updatedGenre)
+    public async Task UpdateGenre(Guid id, GenreDTO updatedGenreDTO)
     {
-        throw new NotImplementedException();
+        var genre = await _dbContext.Genres.FindAsync(id);
+        genre.Name = updatedGenreDTO.Name;
+        genre.Description = updatedGenreDTO.Description;
     }
 
     public async Task DeleteGenre(Guid id)
     {
-        await _dbContext.Genres.Where(genre => genre.Id == id).ExecuteDeleteAsync();
+        await _dbContext.Genres
+            .Where(genre => genre.Id == id)
+            .ExecuteDeleteAsync();
     }
+
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();
@@ -50,14 +49,14 @@ public class GenrePostgreRepository : IGenreRepository
 
     public virtual void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        if (!disposed)
         {
             if (disposing)
             {
                 _dbContext.Dispose();
             }
+            disposed = true;
         }
-        this.disposed = true;
     }
 
     public void Dispose()
@@ -65,5 +64,4 @@ public class GenrePostgreRepository : IGenreRepository
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
 }

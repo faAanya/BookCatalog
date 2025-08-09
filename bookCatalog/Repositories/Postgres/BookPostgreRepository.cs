@@ -20,17 +20,15 @@ public class BookPostgreRepository : IBookRepository
         return books;
     }
 
-    public async Task<Book> GetBookById(Guid id)
+    public async Task<BookDTO> GetBookById(Guid id)
     {
-        Book? book = await _dbContext.Books
-          .Include(b => b.Authors)
-          .Include(b => b.Genres)
-          .FirstOrDefaultAsync(b => b.Id == id);
+        var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id);
+        var bookDTO = BookMapper.BookToDTO(book);
 
-        return book;
+        return bookDTO;
     }
 
-    public async Task CreateBook(CreateBookDTO bookDTO)
+    public async Task CreateBook(BookDTO bookDTO)
     {
         var authors = await _dbContext.Authors
                             .Where(a => bookDTO.Authors.Contains(a.Id))
@@ -47,9 +45,16 @@ public class BookPostgreRepository : IBookRepository
         await _dbContext.Books.AddAsync(newBook);
     }
 
-    public Task UpdateBook(Guid id, Book newBook)
+    public async Task UpdateBook(Guid id, BookDTO updatedBook)
     {
-        throw new NotImplementedException();
+        var bookToUpdate = _dbContext.Books.FirstOrDefault(b => b.Id == id);
+
+        bookToUpdate.Title = updatedBook.Title;
+        bookToUpdate.Description = updatedBook.Description;
+        bookToUpdate.PageCount = updatedBook.PageCount;
+        bookToUpdate.ISBN = updatedBook.ISBN;
+        bookToUpdate.PublicationYear = updatedBook.PublicationYear;
+        bookToUpdate.CoverImageUrl = updatedBook.CoverImageUrl;
     }
 
     public async Task DeleteBook(Guid id)

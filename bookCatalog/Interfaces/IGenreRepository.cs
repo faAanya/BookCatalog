@@ -1,9 +1,9 @@
 public interface IGenreRepository : IDisposable
 {
-    Task<IEnumerable<Genre>> GetAllGenres();
-    Task<Genre> GetGenreById(Guid id);
-    Task CreateGenre(CreateGenreDTO genreDTO);
-    Task UpdateGenre(Guid id, Genre updatedGenre);
+    Task<IEnumerable<GenreDTO>> GetAllGenres();
+    Task<GenreDTO> GetGenreById(Guid id);
+    Task CreateGenre(GenreDTO genreDTO);
+    Task UpdateGenre(Guid id, GenreDTO updatedGenreDTO);
     Task DeleteGenre(Guid id);
     Task SaveChangesAsync();
 }

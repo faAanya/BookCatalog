@@ -34,26 +34,26 @@ public class AuthorsController : ControllerBase
         return Ok(author);
     }
 
-    // POST: api/books
+    // POST: api/authors
     [HttpPost]
-    public async Task<IActionResult> CreateAuthor([FromBody] CreateAuthorDTO newAuthor)
+    public async Task<IActionResult> CreateAuthor([FromBody] AuthorDTO newAuthor)
     {
         await _dbContext.CreateAuthor(newAuthor);
         await _dbContext.SaveChangesAsync();
         return Ok(newAuthor);
     }
 
-    // PUT: api/books/{id}
+    // PUT: api/authors/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] Book updatedBook)
+    public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] AuthorDTO updatedAuthor)
     {
-        // await _dbContext.UpdateItem(id, updatedBook);
+        await _dbContext.UpdateAuthor(id, updatedAuthor);
         await _dbContext.SaveChangesAsync();
 
-        return Ok();
+        return Ok(updatedAuthor);
     }
 
-    // DELETE: api/books/{id}
+    // DELETE: api/authors/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAuthor(Guid id)
     {

@@ -1,8 +1,8 @@
 public static class BookMapper
 {
-    public static GetBookDTO BookToDTO(Book book)
+    public static BookDTO BookToDTO(Book book)
     {
-        return new GetBookDTO()
+        return new BookDTO()
         {
             Id = book.Id,
             Title = book.Title,
@@ -11,15 +11,16 @@ public static class BookMapper
             PublicationYear = book.PublicationYear,
             CoverImageUrl = book.CoverImageUrl,
             PageCount = book.PageCount,
-            Authors = book.Authors.Select(a => $"{a.FirstName} {a.LastName}").ToList(),
-            Genres = book.Genres.Select(g => g.Name).ToList()
+            Authors = book.Authors.Select(a => a.Id).ToList(),
+            Genres = book.Genres.Select(g => g.Id).ToList()
         };
     }
 
-    public static Book DTOtoBook(CreateBookDTO bookDTO)
+    public static Book DTOtoBook(BookDTO bookDTO)
     {
         return new Book()
         {
+            Id = bookDTO.Id,
             Title = bookDTO.Title,
             Description = bookDTO.Description,
             ISBN = bookDTO.ISBN,

@@ -20,7 +20,6 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> GetAllBooks()
     {
         var books = await _dbContext.GetAllBooks();
-
         var result = books.Select(BookMapper.BookToDTO);
 
         return Ok(result);
@@ -31,7 +30,6 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> GetBookById(Guid id)
     {
         var book = await _dbContext.GetBookById(id);
-
         if (book == null)
             return NotFound();
 
@@ -40,7 +38,7 @@ public class BooksController : ControllerBase
 
     // POST: api/books
     [HttpPost]
-    public async Task<IActionResult> CreateBook([FromBody] CreateBookDTO book)
+    public async Task<IActionResult> CreateBook([FromBody] BookDTO book)
     {
         await _dbContext.CreateBook(book);
         await _dbContext.SaveChangesAsync();
@@ -49,12 +47,12 @@ public class BooksController : ControllerBase
 
     // PUT: api/books/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateBook(Guid id, [FromBody] Book updatedBook)
+    public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookDTO updatedBook)
     {
         await _dbContext.UpdateBook(id, updatedBook);
         await _dbContext.SaveChangesAsync();
 
-        return Ok();
+        return Ok(updatedBook);
     }
 
     // DELETE: api/books/{id}
