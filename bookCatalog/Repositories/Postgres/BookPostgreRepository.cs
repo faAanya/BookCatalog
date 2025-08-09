@@ -1,83 +1,111 @@
-
-using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
-public class BookPostgreRepository : IBookRepository
+public class BookPostgreRepository : IRepository<BookDTO>
 {
-    private BookCatalogDbContext _dbContext;
+    private readonly BookCatalogDbContext _dbContext;
+    private bool disposed = false;
+
     public BookPostgreRepository(BookCatalogDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    private bool disposed = false;
 
-    public async Task<IEnumerable<Book>> GetAllBooksAsync()
+    public async Task<IEnumerable<BookDTO>> GetAllItemsAsync(CancellationToken cancellationToken = default)
     {
         var books = await _dbContext.Books
-        .Include(b => b.Authors)
-        .Include(b => b.Genres)
-        .ToListAsync();
-        return books;
+            .Include(b => b.Authors)
+            .Include(b => b.Genres)
+            .ToListAsync(cancellationToken);
+
+        return books.Select(BookMapper.BookToDTO).ToList();
     }
 
-    public async Task<BookDTO> GetBookByIdAsync(Guid id)
+    public async Task<BookDTO> GetItemByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id);
-        var bookDTO = BookMapper.BookToDTO(book);
+        var book = await _dbContext.Books
+            .Include(b => b.Authors)
+            .Include(b => b.Genres)
+            .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
 
-        return bookDTO;
+        return BookMapper.BookToDTO(book);
     }
 
-    public async Task CreateBookAsync(BookDTO bookDTO)
+    public async Task CreateItemAsync(BookDTO newItem, CancellationToken cancellationToken = default)
     {
         var authors = await _dbContext.Authors
-                            .Where(a => bookDTO.Authors.Contains(a.Id))
-                            .ToListAsync();
+            .Where(a => newItem.Authors.Contains(a.Id))
+            .ToListAsync(cancellationToken);
 
         var genres = await _dbContext.Genres
-                            .Where(g => bookDTO.Genres.Contains(g.Id))
-                            .ToListAsync();
+            .Where(g => newItem.Genres.Contains(g.Id))
+            .ToListAsync(cancellationToken);
 
-        var newBook = BookMapper.DTOtoBook(bookDTO);
+        var newBook = BookMapper.DTOtoBook(newItem);
         newBook.Authors.AddRange(authors);
         newBook.Genres.AddRange(genres);
 
-        await _dbContext.Books.AddAsync(newBook);
+        await _dbContext.Books.AddAsync(newBook, cancellationToken);
     }
 
-    public async Task UpdateBookAsync(Guid id, BookDTO updatedBook)
+    public async Task UpdateItemAsync(Guid id, BookDTO updatedItem, CancellationToken cancellationToken = default)
     {
-        var bookToUpdate = _dbContext.Books.FirstOrDefault(b => b.Id == id);
+        var bookToUpdate = await _dbContext.Books
+            .Include(b => b.Authors)
+            .Include(b => b.Genres)
+            .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
 
-        bookToUpdate.Title = updatedBook.Title;
-        bookToUpdate.Description = updatedBook.Description;
-        bookToUpdate.PageCount = updatedBook.PageCount;
-        bookToUpdate.ISBN = updatedBook.ISBN;
-        bookToUpdate.PublicationYear = updatedBook.PublicationYear;
-        bookToUpdate.CoverImageUrl = updatedBook.CoverImageUrl;
+        if (bookToUpdate == null)
+            throw new KeyNotFoundException($"Book with id {id} not found");
+
+        bookToUpdate.Title = updatedItem.Title;
+        bookToUpdate.Description = updatedItem.Description;
+        bookToUpdate.PageCount = updatedItem.PageCount;
+        bookToUpdate.ISBN = updatedItem.ISBN;
+        bookToUpdate.PublicationYear = updatedItem.PublicationYear;
+        bookToUpdate.CoverImageUrl = updatedItem.CoverImageUrl;
+
+        var authors = await _dbContext.Authors
+            .Where(a => updatedItem.Authors.Contains(a.Id))
+            .ToListAsync(cancellationToken);
+        bookToUpdate.Authors.Clear();
+        bookToUpdate.Authors.AddRange(authors);
+
+        var genres = await _dbContext.Genres
+            .Where(g => updatedItem.Genres.Contains(g.Id))
+            .ToListAsync(cancellationToken);
+        bookToUpdate.Genres.Clear();
+        bookToUpdate.Genres.AddRange(genres);
     }
 
-    public async Task DeleteBookAsync(Guid id)
+    public async Task DeleteItemAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Books.Where(book => book.Id == id).ExecuteDeleteAsync();
+        var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+        if (book != null)
+        {
+            _dbContext.Books.Remove(book);
+        }
+        else
+        {
+            throw new KeyNotFoundException($"Book with id {id} not found");
+        }
     }
 
-
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
-        if (!this.disposed)
+        if (!disposed)
         {
             if (disposing)
             {
                 _dbContext.Dispose();
             }
+            disposed = true;
         }
-        this.disposed = true;
     }
 
     public void Dispose()
@@ -85,6 +113,4 @@ public class BookPostgreRepository : IBookRepository
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
-
 }

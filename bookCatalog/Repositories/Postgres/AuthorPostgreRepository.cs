@@ -1,61 +1,71 @@
-
 using Microsoft.EntityFrameworkCore;
 
-public class AuthorPostgreRepository : IAuthorRepository
+public class AuthorPostgreRepository : IRepository<AuthorDTO>
 {
-    private BookCatalogDbContext _dbContext;
+    private readonly BookCatalogDbContext _dbContext;
     private bool disposed = false;
+
     public AuthorPostgreRepository(BookCatalogDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<AuthorDTO>> GetAllAuthorsAsync()
+    public async Task<IEnumerable<AuthorDTO>> GetAllItemsAsync(CancellationToken cancellationToken = default)
     {
-        var authors = await _dbContext.Authors.ToListAsync();
+        var authors = await _dbContext.Authors.ToListAsync(cancellationToken);
         return authors.Select(AuthorMapper.AuthorToDTO).ToList();
     }
 
-    public async Task<AuthorDTO> GetAuthorByIdAsync(Guid id)
+    public async Task<AuthorDTO> GetItemByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == id);
-        var authorDTO = AuthorMapper.AuthorToDTO(author);
-        return authorDTO;
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        if (author == null)
+            throw new KeyNotFoundException($"Author with id {id} not found");
+
+        return AuthorMapper.AuthorToDTO(author);
     }
 
-    public async Task CreateAuthorAsync(AuthorDTO authorDTO)
+    public async Task CreateItemAsync(AuthorDTO newItem, CancellationToken cancellationToken = default)
     {
-        var newAuthor = AuthorMapper.DTOtoAuthor(authorDTO);
-        await _dbContext.Authors.AddAsync(newAuthor);
+        var newAuthor = AuthorMapper.DTOtoAuthor(newItem);
+        await _dbContext.Authors.AddAsync(newAuthor, cancellationToken);
     }
 
-    public async Task UpdateAuthorAsync(Guid id, AuthorDTO newAuthor)
+    public async Task UpdateItemAsync(Guid id, AuthorDTO updatedItem, CancellationToken cancellationToken = default)
     {
-        var updatedAuthor = await _dbContext.Authors.FindAsync(id);
-        updatedAuthor.FirstName = newAuthor.FirstName;
-        updatedAuthor.LastName = newAuthor.LastName;
-        updatedAuthor.Biography = newAuthor.Biography;
+        var updatedAuthor = await _dbContext.Authors.FindAsync(new object[] { id }, cancellationToken);
+        if (updatedAuthor == null)
+            throw new KeyNotFoundException($"Author with id {id} not found");
+
+        updatedAuthor.FirstName = updatedItem.FirstName;
+        updatedAuthor.LastName = updatedItem.LastName;
+        updatedAuthor.Biography = updatedItem.Biography;
     }
 
-    public async Task DeleteAuthorAsync(Guid id)
+    public async Task DeleteItemAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Authors.Where(author => author.Id == id).ExecuteDeleteAsync();
-    }
-    public async Task SaveChangesAsync()
-    {
-        await _dbContext.SaveChangesAsync();
+        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        if (author == null)
+            throw new KeyNotFoundException($"Author with id {id} not found");
+
+        _dbContext.Authors.Remove(author);
     }
 
-    public virtual void Dispose(bool disposing)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        if (!this.disposed)
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
         {
             if (disposing)
             {
                 _dbContext.Dispose();
             }
+            disposed = true;
         }
-        this.disposed = true;
     }
 
     public void Dispose()
@@ -63,5 +73,4 @@ public class AuthorPostgreRepository : IAuthorRepository
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
 }

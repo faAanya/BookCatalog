@@ -8,28 +8,26 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly IBookRepository _dbContext;
+    private readonly IRepository<BookDTO> _dbContext;
 
-    public BooksController(IBookRepository dbContext)
+    public BooksController(IRepository<BookDTO> dbContext)
     {
         _dbContext = dbContext;
     }
 
     // GET: api/books
     [HttpGet]
-    public async Task<IActionResult> GetAllBooks()
+    public async Task<IActionResult> GetAllBooks(CancellationToken cancellationToken)
     {
-        var books = await _dbContext.GetAllBooksAsync();
-        var result = books.Select(BookMapper.BookToDTO);
-
-        return Ok(result);
+        var books = await _dbContext.GetAllItemsAsync(cancellationToken);
+        return Ok(books);
     }
 
     // GET: api/books/{id}
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetBookById(Guid id)
+    public async Task<IActionResult> GetBookById(Guid id, CancellationToken cancellationToken)
     {
-        var book = await _dbContext.GetBookByIdAsync(id);
+        var book = await _dbContext.GetItemByIdAsync(id, cancellationToken);
         if (book == null)
             return NotFound();
 
@@ -38,29 +36,29 @@ public class BooksController : ControllerBase
 
     // POST: api/books
     [HttpPost]
-    public async Task<IActionResult> CreateBook([FromBody] BookDTO book)
+    public async Task<IActionResult> CreateBook([FromBody] BookDTO book, CancellationToken cancellationToken)
     {
-        await _dbContext.CreateBookAsync(book);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.CreateItemAsync(book, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return Ok(book);
     }
 
     // PUT: api/books/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookDTO updatedBook)
+    public async Task<IActionResult> UpdateBook(Guid id, [FromBody] BookDTO updatedBook, CancellationToken cancellationToken)
     {
-        await _dbContext.UpdateBookAsync(id, updatedBook);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.UpdateItemAsync(id, updatedBook, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return Ok(updatedBook);
     }
 
     // DELETE: api/books/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteBook(Guid id)
+    public async Task<IActionResult> DeleteBook(Guid id, CancellationToken cancellationToken)
     {
-        await _dbContext.DeleteBookAsync(id);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.DeleteItemAsync(id, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
 }

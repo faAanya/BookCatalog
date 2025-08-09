@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class GenresController : ControllerBase
 {
-    private readonly IGenreRepository _dbContext;
+    private readonly IRepository<GenreDTO> _dbContext;
 
-    public GenresController(IGenreRepository dbContext)
+    public GenresController(IRepository<GenreDTO> dbContext)
     {
         _dbContext = dbContext;
     }
 
     // GET: /genres
     [HttpGet]
-    public async Task<IActionResult> GetAllGenres()
+    public async Task<IActionResult> GetAllGenres(CancellationToken cancellationToken)
     {
-        var genres = await _dbContext.GetAllGenresAsync();
+        var genres = await _dbContext.GetAllItemsAsync(cancellationToken);
         return Ok(genres);
     }
 
     // GET: api/genres/{id}
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetGenreById(Guid id)
+    public async Task<IActionResult> GetGenreById(Guid id, CancellationToken cancellationToken)
     {
-        var genre = await _dbContext.GetGenreByIdAsync(id);
+        var genre = await _dbContext.GetItemByIdAsync(id, cancellationToken);
         if (genre == null)
             return NotFound();
 
@@ -36,29 +36,29 @@ public class GenresController : ControllerBase
 
     // POST: api/genres
     [HttpPost]
-    public async Task<IActionResult> CreateGenre([FromBody] GenreDTO newGenre)
+    public async Task<IActionResult> CreateGenre([FromBody] GenreDTO newGenre, CancellationToken cancellationToken)
     {
-        await _dbContext.CreateGenreAsync(newGenre);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.CreateItemAsync(newGenre, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return Ok(newGenre);
     }
 
     // PUT: api/genres/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] GenreDTO updatedGenre)
+    public async Task<IActionResult> UpdateGenre(Guid id, [FromBody] GenreDTO updatedGenre, CancellationToken cancellationToken)
     {
-        await _dbContext.UpdateGenreAsync(id, updatedGenre);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.UpdateItemAsync(id, updatedGenre, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return Ok();
     }
 
     // DELETE: api/genres/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteGenre(Guid id)
+    public async Task<IActionResult> DeleteGenre(Guid id, CancellationToken cancellationToken)
     {
-        await _dbContext.DeleteGenreAsync(id);
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.DeleteItemAsync(id, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         return NoContent();
     }
 }

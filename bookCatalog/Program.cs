@@ -6,9 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load();
 var connectionString = Environment.GetEnvironmentVariable("POSTGRES_STRING");
 builder.Services.AddDbContext<BookCatalogDbContext>(options => options.UseNpgsql(connectionString));
-builder.Services.AddScoped<IBookRepository, BookPostgreRepository>();
-builder.Services.AddScoped<IAuthorRepository, AuthorPostgreRepository>();
-builder.Services.AddScoped<IGenreRepository, GenrePostgreRepository>();
+builder.Services.AddScoped<IRepository<BookDTO>, BookPostgreRepository>();
+builder.Services.AddScoped<IRepository<AuthorDTO>, AuthorPostgreRepository>();
+builder.Services.AddScoped<IRepository<GenreDTO>, GenrePostgreRepository>();
 
 builder.Services.AddScoped<FileService>();
 

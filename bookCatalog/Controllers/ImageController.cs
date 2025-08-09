@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 [Route("[controller]")]
 public class ImagesController : ControllerBase
 {
-    private readonly IBookRepository _dbContext;
+    private readonly IRepository<BookDTO> _dbContext;
     private readonly FileService _fileService;
 
-    public ImagesController(IBookRepository dbContext, FileService fileService)
+    public ImagesController(IRepository<BookDTO> dbContext, FileService fileService)
     {
         _dbContext = dbContext;
         _fileService = fileService;
@@ -19,9 +19,9 @@ public class ImagesController : ControllerBase
 
     // GET: images/{id}
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetFile(Guid id)
+    public async Task<IActionResult> GetFile(Guid id, CancellationToken cancellationToken)
     {
-        BookDTO? book = await _dbContext.GetBookByIdAsync(id);
+        BookDTO? book = await _dbContext.GetItemByIdAsync(id, cancellationToken);
 
         var fileName = Path.GetFileName(new Uri(book.CoverImageUrl).AbsolutePath);
 
@@ -32,9 +32,9 @@ public class ImagesController : ControllerBase
 
     // POST: /images
     [HttpPost]
-    public async Task<IActionResult> DownloadImage([FromBody] ImageDTO request)
+    public async Task<IActionResult> DownloadImage([FromBody] ImageDTO request, CancellationToken cancellationToken)
     {
-        await _fileService.DownloadFile(request.FileName);
+        await _fileService.DownloadFile(request.FileName, cancellationToken);
         return Ok(new { message = "File downloaded successfully." });
     }
 
