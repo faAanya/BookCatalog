@@ -18,9 +18,9 @@ public class FileService
         return File.Exists(filePath) ? filePath : null;
     }
 
-    public async Task<string> DownloadFile(string fileUrl)
+    public async Task<string> DownloadFile(string fileUrl, CancellationToken cancellationToken)
     {
-        using var response = await _httpClient.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead);
+        using var response = await _httpClient.GetAsync(fileUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         response.EnsureSuccessStatusCode();
         var fileName = Path.GetFileName(new Uri(fileUrl).AbsolutePath);
 
@@ -28,9 +28,9 @@ public class FileService
 
         var filePath = Path.Combine(_downloadsPath, fileName);
 
-        await using var contentStream = await response.Content.ReadAsStreamAsync();
+        await using var contentStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-        await contentStream.CopyToAsync(fileStream);
+        await contentStream.CopyToAsync(fileStream, cancellationToken);
 
         return fileName;
     }
