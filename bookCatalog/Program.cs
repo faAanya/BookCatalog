@@ -26,6 +26,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.ApplyMigrations();
 app.UseCors();
 app.MapControllers();
 app.Run();
