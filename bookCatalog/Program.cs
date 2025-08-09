@@ -6,8 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load();
 var connectionString = "Host=postgres;Port=5432;Database=bookCatalog;Username=postgres;Password=bookCatalogPassword";
 builder.Services.AddDbContext<BookCatalogDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddScoped<IRepository<BookDTO>, BookPostgreRepository>();
+builder.Services.AddScoped<IRepository<AuthorDTO>, AuthorPostgreRepository>();
+builder.Services.AddScoped<IRepository<GenreDTO>, GenrePostgreRepository>();
 
 builder.Services.AddScoped<FileService>();
+
+builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
@@ -21,12 +26,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-
 app.UseCors();
-app.UseGlobalErrorHandler();
-app.UseBookValidation();
-app.MapBooksEndpoints();
-app.MapAuthorsEndpoints();
-app.MapGenresEndpoints();
-app.MapImagesEndpoints();
+app.MapControllers();
 app.Run();
