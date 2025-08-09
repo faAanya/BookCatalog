@@ -2,7 +2,43 @@
 
 ## Описание
 
-Необходимо разработать backend-приложение для управления библиотекой книг, которое позволит пользователям вести учет книг, авторов и жанров.
+Backend-приложение для управления библиотекой книг, которое позволит пользователям вести учет книг, авторов и жанров.
+
+## Установка
+
+Для запуска приложения используется Docker. Он Предварительно должен быть установлен на компьютер. 
+
+**1. Склонируйте репозиторий:**
+```bash
+git clone https://github.com/faAanya/modsenBookCatalog.git 
+```
+Или скачайте modsenBookCatalog-master.zip
+
+**2. Перейдите в папку проекта**
+```bash
+cd your-repo
+```
+**3. Запуск Докера**
+
+Соберите проект:
+```bash
+docker-compose build
+```
+
+Запустите контейнера: 
+```bash
+docker-compose up
+```
+
+Откройте приложение в браузере по адресу:
+```bash
+http://localhost:5173
+```
+
+Остановка контейнера
+```bash
+docker-compose down
+```
 
 ## Функционал Web API
 
@@ -31,40 +67,6 @@
 - Сортировки по названию, году издания;
 - Постраничной выдачи результатов;
 - Управление авторами и жанрами (CRUD операции).
-
-## Модели
-
-```csharp
-public interface IEntity
-{
-    public Guid Id { get; set; }
-}
-
-public class Book : IEntity
-{
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public string ISBN { get; set; }
-    public int PublicationYear { get; set; }
-    public List<Author> Authors { get; set; }
-    public List<Genre> Genres { get; set; }
-    public string CoverImageUrl { get; set; }
-    public int PageCount { get; set; }
-}
-
-public class Author : IEntity
-{
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Biography { get; set; }
-}
-
-public class Genre : IEntity
-{
-    public string Name { get; set; }
-    public string Description { get; set; }
-}
-```
 
 ## Так же проект предполагает
 
