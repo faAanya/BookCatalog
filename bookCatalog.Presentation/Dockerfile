@@ -9,18 +9,18 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Development
 WORKDIR /src
 
-COPY ["bookCatalog.csproj", "./"]
+COPY ["bookCatalog.Presentation.csproj", "./"]
 
-RUN dotnet restore "bookCatalog.csproj"
+RUN dotnet restore "bookCatalog.Presentation..csproj"
 
 COPY . . 
 
 WORKDIR /src
-RUN dotnet build "bookCatalog.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "bookCatalog.Presentation..csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build as publish
 ARG BUILD_CONFIGURATION=Development
-RUN dotnet publish "bookCatalog.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost
+RUN dotnet publish "bookCatalog.Presentation..csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost
 
 FROM base as final
 WORKDIR /app

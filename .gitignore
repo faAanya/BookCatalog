@@ -5,6 +5,8 @@ Downloads/
 
 # Editor directories and files
 .vscode/*
+.vs/*
+.github/*
 !.vscode/extensions.json
 .idea
 .DS_Store
