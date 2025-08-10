@@ -1,5 +1,8 @@
+import { fetchAuthor } from "../controllers/authorController";
+import { fetchGenre } from "../controllers/genreController";
 import "../styles/bookCard.css"
 import { BookImage } from "./imageComponent";
+import { useState, useEffect } from "react";
 export const Book = ({
     id,
     title,
@@ -8,10 +11,43 @@ export const Book = ({
     publicationYear,
     coverImageUrl,
     pageCount,
-    authors,
-    genres,
+    authorsId,
+    genresId,
     onClick
 }) => {
+
+    const [authors, setAuthors] = useState([])
+    const [genres, setGenres] = useState([])
+
+    useEffect(() => {
+        if (!authorsId?.length) return;
+
+        const loadAuthors = async () => {
+            try {
+                const results = await authorIds.map((id) => fetchAuthor(id))
+                console.log(results);
+
+                setAuthors(results);
+            } catch (err) {
+                console.error("Error fetching authors:", err);
+            }
+        };
+
+        const loadGenres = async () => {
+            try {
+                const results = await genresId.map((id) => fetchGenre(id))
+                console.log(results);
+
+                setGenres(results);
+            } catch (err) {
+                console.error("Error fetching genres:", err);
+            }
+        };
+
+        loadAuthors();
+        loadGenres();
+    }, [authorsId, genresId]);
+
     return (
         <div className="book-details" onClick={() => onClick(
             title,
@@ -29,11 +65,11 @@ export const Book = ({
             <p><strong>Page Count:</strong> {pageCount ?? "—"}</p>
 
             <div>
-                <strong>Authors:</strong> {authors.join(", ")}
+                <strong>Authors:</strong> {authorsData.map((a) => a.firstName).join(", ")}
             </div>
 
             <div>
-                <strong>Genres:</strong> {genres.join(", ")}
+                <strong>Genres:</strong> {genres.map((g) => a.name).join(", ")}
             </div>
         </div >
     );
