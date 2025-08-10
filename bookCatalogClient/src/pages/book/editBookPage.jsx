@@ -26,6 +26,8 @@ export const EditBookPage = () => {
 
     const handleSave = async () => {
         try {
+            console.log(book.id, book);
+
             await updateBook(book.id, book);
             navigate(`/book/${book.id}`);
         } catch (error) {
@@ -47,6 +49,7 @@ export const EditBookPage = () => {
             <textarea name="description" value={book.description} onChange={handleChange} placeholder="Description" />
             <input name="isbn" value={book.isbn} onChange={handleChange} placeholder="ISBN" />
             <input name="publicationYear" value={book.publicationYear} type="number" onChange={handleChange} placeholder="Year" />
+            <input name="coverImageUrl" value={book.coverImageUrl} onChange={handleChange} placeholder="URL" />
             <input name="pageCount" value={book.pageCount} type="number" onChange={handleChange} placeholder="Pages" />
             <button onClick={handleSave}>Save</button>
             <button onClick={() => navigate(-1)}>Cancel</button>

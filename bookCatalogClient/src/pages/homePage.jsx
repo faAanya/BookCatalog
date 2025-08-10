@@ -11,6 +11,8 @@ export const HomePage = () => {
     useEffect(() => {
         const loadBooks = async () => {
             const allBooks = await fetchBooks();
+            console.log(allBooks);
+
             setBooks(allBooks);
         };
         loadBooks();
