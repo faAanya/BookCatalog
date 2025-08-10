@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 
 public class FileService
 {
     private readonly HttpClient _httpClient = new();
     private readonly string _downloadsPath;
 
-    public FileService(IWebHostEnvironment env)
+    public FileService(string downloadsPath)
     {
-        _downloadsPath = Path.Combine(env.ContentRootPath, "Downloads");
+        _downloadsPath = downloadsPath;
+        _downloadsPath = Path.Combine(_downloadsPath, "Downloads");
         if (!Directory.Exists(_downloadsPath))
             Directory.CreateDirectory(_downloadsPath);
     }

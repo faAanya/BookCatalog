@@ -10,7 +10,12 @@ builder.Services.AddScoped<IRepository<BookDTO>, BookPostgreRepository>();
 builder.Services.AddScoped<IRepository<AuthorDTO>, AuthorPostgreRepository>();
 builder.Services.AddScoped<IRepository<GenreDTO>, GenrePostgreRepository>();
 
-builder.Services.AddScoped<FileService>();
+builder.Services.AddSingleton<FileService>(sp =>
+{
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+    var downloadsPath = Path.Combine(env.ContentRootPath, "Downloads");
+    return new FileService(downloadsPath);
+});
 
 builder.Services.AddControllers();
 

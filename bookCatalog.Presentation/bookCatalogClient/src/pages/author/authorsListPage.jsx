@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchAuthors } from '../../controllers/authorController';
 import { useNavigate } from 'react-router-dom';
 import "../../styles/homePage.css"
-import { Author } from '../../components/authotComponent';
+import { Author } from '../../components/authorComponent';
 
 export const AuthorsPage = () => {
     const [authors, setAutors] = useState([]);

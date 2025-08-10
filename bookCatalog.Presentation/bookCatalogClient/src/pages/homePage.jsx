@@ -36,8 +36,8 @@ export const HomePage = () => {
                             isbn={book.isbn}
                             publicationYear={book.publicationYear}
                             coverImageUrl={book.coverImageUrl}
-                            authors={book.authors}
-                            genres={book.genres}
+                            authorsId={book.authors}
+                            genresId={book.genres}
                             pageCount={book.pageCount}
                             onClick={() => { navigate(`/book/${book.id}`) }}
                         />
