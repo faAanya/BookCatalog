@@ -1,8 +1,9 @@
 import { fetchAuthor } from "../controllers/authorController";
 import { fetchGenre } from "../controllers/genreController";
-import "../styles/bookCard.css"
+import "../styles/bookCard.css";
 import { BookImage } from "./imageComponent";
 import { useState, useEffect } from "react";
+
 export const Book = ({
     id,
     title,
@@ -15,47 +16,53 @@ export const Book = ({
     genresId,
     onClick
 }) => {
-
-    const [authors, setAuthors] = useState([])
-    const [genres, setGenres] = useState([])
+    const [authors, setAuthors] = useState([]);
+    const [genres, setGenres] = useState([]);
 
     useEffect(() => {
-        if (!authorsId?.length) return;
+        if (authorsId?.length) {
+            const loadAuthors = async () => {
+                try {
+                    const results = await Promise.all(
+                        authorsId.map((aid) => fetchAuthor(aid))
+                    );
+                    setAuthors(results.filter(Boolean)); // remove nulls if fetch failed
+                } catch (err) {
+                    console.error("Error fetching authors:", err);
+                }
+            };
+            loadAuthors();
+        }
 
-        const loadAuthors = async () => {
-            try {
-                const results = await authorIds.map((id) => fetchAuthor(id))
-                console.log(results);
-
-                setAuthors(results);
-            } catch (err) {
-                console.error("Error fetching authors:", err);
-            }
-        };
-
-        const loadGenres = async () => {
-            try {
-                const results = await genresId.map((id) => fetchGenre(id))
-                console.log(results);
-
-                setGenres(results);
-            } catch (err) {
-                console.error("Error fetching genres:", err);
-            }
-        };
-
-        loadAuthors();
-        loadGenres();
+        if (genresId?.length) {
+            const loadGenres = async () => {
+                try {
+                    const results = await Promise.all(
+                        genresId.map((gid) => fetchGenre(gid))
+                    );
+                    setGenres(results.filter(Boolean));
+                } catch (err) {
+                    console.error("Error fetching genres:", err);
+                }
+            };
+            loadGenres();
+        }
     }, [authorsId, genresId]);
 
     return (
-        <div className="book-details" onClick={() => onClick(
-            title,
-            description,
-            isbn,
-            publicationYear,
-            coverImageUrl,
-            pageCount)}>
+        <div
+            className="book-details"
+            onClick={() =>
+                onClick(
+                    title,
+                    description,
+                    isbn,
+                    publicationYear,
+                    coverImageUrl,
+                    pageCount
+                )
+            }
+        >
             <h2 className="book-title">{title}</h2>
 
             <BookImage id={id} title={title} />
@@ -65,12 +72,14 @@ export const Book = ({
             <p><strong>Page Count:</strong> {pageCount ?? "—"}</p>
 
             <div>
-                <strong>Authors:</strong> {authorsData.map((a) => a.firstName).join(", ")}
+                <strong>Authors:</strong>{" "}
+                {authors.map((a) => `${a.firstName} ${a.lastName}`).join(", ")}
             </div>
 
             <div>
-                <strong>Genres:</strong> {genres.map((g) => a.name).join(", ")}
+                <strong>Genres:</strong>{" "}
+                {genres.map((g) => g.name).join(", ")}
             </div>
-        </div >
+        </div>
     );
 };
