@@ -14,9 +14,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
+    public async Task<IActionResult> Register([FromBody] RegisterUserDto dto, CancellationToken cancellationToken)
     {
-        var result = await _userService.RegisterAsync(dto);
+        var result = await _userService.RegisterAsync(dto, cancellationToken);
         if (!result)
             return BadRequest("User already exists");
 
@@ -24,9 +24,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
+    public async Task<IActionResult> Login([FromBody] LoginUserDto dto, CancellationToken cancellationToken)
     {
-        var user = await _userService.ValidateUserAsync(dto);
+        var user = await _userService.ValidateUserAsync(dto, cancellationToken);
         if (user == null)
             return Unauthorized();
 

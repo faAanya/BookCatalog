@@ -25,4 +25,9 @@ public class UserPostgreRepository : IUserRepository
     {
         return await _context.Users.AnyAsync(u => u.Username == username, cancellationToken);
     }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

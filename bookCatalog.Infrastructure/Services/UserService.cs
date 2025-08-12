@@ -10,9 +10,9 @@ public class UserService
         _userRepository = userRepository;
     }
 
-    public async Task<bool> RegisterAsync(RegisterUserDto dto)
+    public async Task<bool> RegisterAsync(RegisterUserDto dto, CancellationToken cancellationToken)
     {
-        if (await _userRepository.ExistsAsync(dto.Username))
+        if (await _userRepository.ExistsAsync(dto.Username, cancellationToken))
             return false;
 
         var user = new User
@@ -22,13 +22,14 @@ public class UserService
         };
         user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
 
-        await _userRepository.AddAsync(user);
+        await _userRepository.AddAsync(user, cancellationToken);
+        await _userRepository.SaveChangesAsync(cancellationToken);
         return true;
     }
 
-    public async Task<User?> ValidateUserAsync(LoginUserDto dto)
+    public async Task<User?> ValidateUserAsync(LoginUserDto dto, CancellationToken cancellationToke)
     {
-        var user = await _userRepository.GetByUsernameAsync(dto.Username);
+        var user = await _userRepository.GetByUsernameAsync(dto.Username, cancellationToke);
         if (user == null) return null;
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
