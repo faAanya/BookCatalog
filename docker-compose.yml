@@ -6,15 +6,15 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=3000
     build:
-      context: ./bookCatalog
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: bookCatalog.Presentation/Dockerfile
     ports:
       - "3000:3000"
     depends_on:
       - postgres
 
   postgres:
-    container_name: bookCatalogDb
+    container_name: book.catalog.db
     image: postgres
     restart: always
     environment:
@@ -28,9 +28,9 @@ services:
 
   bookCatalogClient:
     image: book.catalog.client
-    container_name: "bookCatalogClient"
+    container_name: "book.catalog.client"
     build:
-      context: bookCatalogClient
+      context: ./bookCatalog.Presentation/bookCatalogClient
       dockerfile: Dockerfile
     ports:
       - "5173:5173"

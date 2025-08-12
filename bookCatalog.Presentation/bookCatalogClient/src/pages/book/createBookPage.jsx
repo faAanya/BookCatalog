@@ -89,7 +89,7 @@ export const CreateBookPage = () => {
     };
 
     const cancelBookCreation = () => {
-        navigate("/");
+        navigate("/books");
     }
 
 

@@ -20,7 +20,7 @@ cd modsenBookCatalog-master
 ```
 **3. Запуск Докера**
 
-Соберите проекта:
+Соберите проект:
 ```bash
 docker-compose build
 ```
@@ -32,7 +32,7 @@ docker-compose up
 
 Откройте приложение в браузере по адресу:
 ```bash
-http://localhost:5173
+http://localhost:5173/books
 ```
 
 Остановите контейнер:

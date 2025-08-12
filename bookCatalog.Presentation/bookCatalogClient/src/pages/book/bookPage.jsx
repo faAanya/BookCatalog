@@ -19,7 +19,7 @@ export const BookPage = () => {
 
     const handleDelete = async () => {
         await deleteBook(book.id);
-        navigate("/");
+        navigate("/books");
     };
 
     if (!book) return <div>Loading...</div>;
