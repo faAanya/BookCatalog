@@ -52,7 +52,7 @@ export const EditBookPage = () => {
             <input name="coverImageUrl" value={book.coverImageUrl} onChange={handleChange} placeholder="URL" />
             <input name="pageCount" value={book.pageCount} type="number" onChange={handleChange} placeholder="Pages" />
             <button onClick={handleSave}>Save</button>
-            <button onClick={() => navigate(-1)}>Cancel</button>
+            <button onClick={() => navigate("/books")}>Cancel</button>
         </div>
     );
 };

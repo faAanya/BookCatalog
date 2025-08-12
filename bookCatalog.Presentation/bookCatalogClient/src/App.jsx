@@ -11,13 +11,15 @@ import { GenresPage } from './pages/genre/genresListPage';
 import { CreateGenrePage } from './pages/genre/creteGenrePage';
 import { EditGenrePage } from './pages/genre/editGenrePage';
 import { GenrePage } from './pages/genre/genrePage';
-
+import { AuthPage } from './pages/user/authPage';
 function App() {
   return (
     <>
       <div className="App">
+
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* ?<Route path="/" element={<AuthPage />} /> */}
+          <Route path="/books" element={<HomePage />} />
           <Route path="/createBook" element={<CreateBookPage />} />
           <Route path="/book/:id" element={<BookPage />} />
           <Route path="/book/:id/edit" element={<EditBookPage />} />
