@@ -58,11 +58,7 @@ function RegisterForm({ onRegistered }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(
-            typeof err.response?.data === "string"
-                ? err.response.data
-                : JSON.stringify(err.response?.data) || "Ошибка входа"
-        );
+        setError("");
         try {
             await registerUser({ username, email, password });
             onRegistered();
