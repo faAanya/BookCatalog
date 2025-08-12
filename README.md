@@ -32,7 +32,7 @@ docker-compose up
 
 Откройте приложение в браузере по адресу:
 ```bash
-http://localhost:5173/books
+http://localhost:5173
 ```
 
 Остановите контейнер:
