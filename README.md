@@ -10,7 +10,7 @@ Backend-приложение для управления библиотекой 
 
 **1. Склонируйте репозиторий:**
 ```bash
-git clone https://github.com/faAanya/modsenBookCatalog.git 
+git clone https://github.com/faAanya/BookCatalog.git 
 ```
 Или скачайте modsenBookCatalog-master.zip
 
